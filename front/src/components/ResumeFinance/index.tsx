@@ -1,0 +1,61 @@
+'use client';
+
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+
+import { useState } from 'react';
+import { BoxValeus } from './Box';
+import { ProgressBar } from '../ProgressBar';
+
+export function ResumeFinance() {
+  const { saida, entrada } = { saida: 120, entrada: 100 };
+  const calcSaldo = entrada - saida;
+
+  const progress = Math.round(0);
+  const [showValue, setShowValue] = useState(true);
+
+  return (
+    <div className="flex w-[95%] max-w-[1120px] bg-white rounded-[10px]">
+      <div className="w-full py-[40px] px-[20px]">
+        <div className="flex items-center justify-center gap-[20px]">
+          <div className="flex items-center justify-center">
+            <div className="flex flex-col text-black items-center w-[162px]">
+              <div>saldo geral</div>
+              <div className="text-[2rem]">
+                <span>R$</span>
+                <span className="text-green-700">
+                  {!showValue ? calcSaldo.toFixed(2) : '******'}
+                </span>
+              </div>
+            </div>
+            <div>
+              <button onClick={() => setShowValue(!showValue)}>
+                {!showValue ? (
+                  <AiFillEyeInvisible size={32} />
+                ) : (
+                  <AiFillEye size={32} />
+                )}
+              </button>
+            </div>
+          </div>
+          <div style={{ display: 'contents' }}>
+            <ProgressBar progress={progress} bgColor={'red'} />
+          </div>
+        </div>
+        <div className="flex gap-[20px]">
+          <BoxValeus
+            title="Receita mensal"
+            showValue={showValue}
+            color="#49aa26"
+            value={entrada.toString()}
+          />
+          <BoxValeus
+            title="Despesas mensal"
+            showValue={showValue}
+            color="#ff0000"
+            value={saida.toString()}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

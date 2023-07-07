@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(uuid())
+  name String
+  email String
+  password String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("users")
+  inovoice Invoice[]
+}
+
+model Category {
+  id String @id @default(uuid())
+  title String
+  abbreviation String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("categories")
+  invoices Invoice[]
+}
+
+model Invoice {
+  id String @id @default(uuid())
+  description String
+  value Float
+  type Boolean
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  category_id String
+  category Category @relation(fields: [category_id], references: [id])
+
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  @@map("invoice")
+}
