@@ -25,7 +25,7 @@ export default function RootLayout({
 
   return (
     <html lang="pt-BR" suppressHydrationWarning={true}>
-      <body className={inter.className}>
+      <body className={`${inter.className} h-screen`}>
         <AuthProvider>
           {isPublicPage && <>{children}</>}
           {!isPublicPage && <PrivateRoute>{children}</PrivateRoute>}

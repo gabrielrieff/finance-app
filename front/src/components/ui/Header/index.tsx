@@ -26,7 +26,7 @@ export function Header() {
             </ActiveLink>
             <ActiveLink
               className="hover:text-[#ffca00] duration-[0.5s]"
-              href={'/inovoice'}
+              href={'/Accounts'}
             >
               Lançamentos
             </ActiveLink>
