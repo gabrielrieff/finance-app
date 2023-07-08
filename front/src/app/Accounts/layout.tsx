@@ -5,7 +5,7 @@ import { Header } from '~/components/ui/Header';
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html>
-      <title>Dashboard</title>
+      <title>Minhas Contas</title>
       <body className="h-screen">
         <main className="h-full flex flex-col justify-start gap-9">
           <Header />

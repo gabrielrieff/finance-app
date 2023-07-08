@@ -14,17 +14,15 @@ export function ResumeFinance() {
   const [showValue, setShowValue] = useState(true);
 
   return (
-    <div className="flex w-[95%] max-w-[1120px] bg-white rounded-[10px]">
+    <div className="flex w-[95%] max-w-[1120px] bg-white rounded-[10px] shadow-xl">
       <div className="w-full py-[40px] px-[20px]">
         <div className="flex items-center justify-center gap-[20px]">
           <div className="flex items-center justify-center">
             <div className="flex flex-col text-black items-center w-[162px]">
               <div>saldo geral</div>
-              <div className="text-[2rem]">
+              <div className="text-[2rem] font-semibold flex justify-center items-center">
                 <span>R$</span>
-                <span className="text-green-700">
-                  {!showValue ? calcSaldo.toFixed(2) : '******'}
-                </span>
+                <span>{!showValue ? calcSaldo.toFixed(2) : '******'}</span>
               </div>
             </div>
             <div>
