@@ -6,8 +6,17 @@ import { useState } from 'react';
 import { BoxValeus } from './Box';
 import { ProgressBar } from '../ProgressBar';
 
-export function ResumeFinance() {
-  const { saida, entrada } = { saida: 120, entrada: 100 };
+interface resumeAccountsProps {
+  saida: number;
+  entrada: number;
+}
+
+interface resumeAccountProps {
+  resumeAccounts: resumeAccountsProps;
+}
+
+export function ResumeFinance({ resumeAccounts }: resumeAccountProps) {
+  const { saida, entrada } = resumeAccounts;
   const calcSaldo = entrada - saida;
 
   const progress = Math.round(0);
@@ -44,13 +53,13 @@ export function ResumeFinance() {
             title="Receita mensal"
             showValue={showValue}
             color="#49aa26"
-            value={entrada.toString()}
+            value={entrada.toFixed(2)}
           />
           <BoxValeus
             title="Despesas mensal"
             showValue={showValue}
             color="#ff0000"
-            value={saida.toString()}
+            value={saida.toFixed(2)}
           />
         </div>
       </div>

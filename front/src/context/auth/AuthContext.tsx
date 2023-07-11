@@ -18,7 +18,7 @@ type AuthContextData = {
   signIn: (credentials: SignInProps) => Promise<void>;
   signOut: () => void;
   signUp: (credentials: SignUpProps) => Promise<void>;
-  newInovoice: (credentials: newInovoiceProps) => Promise<void>;
+  addAccount: (credentials: newInovoiceProps) => Promise<void>;
 };
 
 export const AuthContext = createContext({} as AuthContextData);
@@ -101,7 +101,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  async function newInovoice({
+  async function addAccount({
     description,
     value,
     type,
@@ -121,7 +121,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, signIn, signOut, signUp, newInovoice }}
+      value={{ user, isAuthenticated, signIn, signOut, signUp, addAccount }}
     >
       <>{children}</>
     </AuthContext.Provider>
