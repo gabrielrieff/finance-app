@@ -13,7 +13,7 @@ interface modalOrderProps {
   onRequestClose: () => void;
 }
 
-export function HandleModal({ isOpen, onRequestClose }: modalOrderProps) {
+export function ProhibitedModal({ isOpen, onRequestClose }: modalOrderProps) {
   const [value, setValue] = useState(0);
   const [description, setDescription] = useState('');
   const [category_id, setCategory_id] = useState('');
@@ -52,7 +52,7 @@ export function HandleModal({ isOpen, onRequestClose }: modalOrderProps) {
       <div className="flex justify-center items-center flex-col h-full">
         <h1 className="font-bold text-[25px]">Adicionar Receita</h1>
         <form
-          onSubmit={() => salveInvoice()}
+          onSubmit={salveInvoice}
           className="w-[80%] h-[90%] flex justify-evenly flex-col"
         >
           <div className="flex flex-col justify-center">

@@ -2,25 +2,68 @@
 
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BoxValeus } from './Box';
 import { ProgressBar } from '../ProgressBar';
+import { billsProps } from '~/@types/bills';
+import { api } from '~/services/Api';
 
 interface resumeAccountsProps {
   saida: number;
   entrada: number;
 }
 
-interface resumeAccountProps {
-  resumeAccounts: resumeAccountsProps;
-}
+export function ResumeFinance() {
+  const [dataAccount, setDataAccount] = useState<Array<billsProps>>([]);
+  const [resumeAccount, setResumeAccount] = useState<resumeAccountsProps>({
+    entrada: 0,
+    saida: 0
+  });
 
-export function ResumeFinance({ resumeAccounts }: resumeAccountProps) {
-  const { saida, entrada } = resumeAccounts;
+  const { saida, entrada } = resumeAccount;
   const calcSaldo = entrada - saida;
 
   const progress = Math.round(0);
   const [showValue, setShowValue] = useState(true);
+
+  async function inovoicesAll() {
+    try {
+      const inovoice = await api.get('inovoice/all');
+      const data = inovoice.data;
+
+      const filterInovoice = data.filter(
+        (account: billsProps) =>
+          new Date(account.created_at).getMonth() === new Date().getMonth()
+      );
+
+      setDataAccount(filterInovoice);
+      return;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const resumeAccounts = () => {
+    let soma = 0;
+    let sub = 0;
+
+    dataAccount.map((account) => {
+      if (account.type === false) {
+        sub += account.value;
+      } else {
+        soma += account.value;
+      }
+    });
+    return { entrada: soma, saida: sub };
+  };
+
+  useEffect(() => {
+    inovoicesAll();
+  }, []);
+
+  useEffect(() => {
+    setResumeAccount(resumeAccounts());
+  }, [dataAccount]);
 
   return (
     <div className="flex w-[95%] max-w-[1120px] bg-white rounded-[10px] shadow-xl">

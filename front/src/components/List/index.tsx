@@ -35,45 +35,56 @@ export function ListAccount({ handleFinishTransaction, Accounts }: ListProps) {
           </tr>
         </thead>
         <tbody className="w-full flex flex-col text-center mt-[10px] shadow-xl">
-          {Accounts.map(
-            (item) => (
-              <tr
-                key={item.id}
-                className="w-full h-[50px] flex items-center justify-around flex-row rounded-sm text-center bg-white hover:bg-yellow-50 mt-1 hover:scale-[1.02] duration-[0.5s]"
-              >
-                <td>
-                  {item.type ? (
-                    <BsArrowUpCircle
-                      color="#157A0C"
-                      size={32}
-                      className="text-[24px]"
+          {Accounts.map((item) => {
+            if (new Date(item.created_at).getMonth() == new Date().getMonth()) {
+              return (
+                <tr
+                  key={item.id}
+                  className="w-full h-[50px] flex items-center justify-around flex-row rounded-sm text-center bg-white hover:bg-yellow-50 mt-1 hover:scale-[1.02] duration-[0.5s]"
+                >
+                  <td className="w-[20%] flex justify-center items-center">
+                    {item.type ? (
+                      <BsArrowUpCircle
+                        color="#157A0C"
+                        size={32}
+                        className="text-[24px]"
+                      />
+                    ) : (
+                      <BsArrowDownCircle
+                        color="#FF0000"
+                        size={32}
+                        className=""
+                      />
+                    )}
+                  </td>
+                  <td className="w-[20%] flex justify-center items-center">
+                    {item.category.title}
+                  </td>
+                  <td className="w-[20%] flex justify-center items-center">
+                    {convertDate(item.created_at)}
+                  </td>
+                  <td className="w-[20%] flex justify-center items-center">
+                    {item.description}
+                  </td>
+                  <td className="w-[20%] flex justify-center items-center">
+                    R${item.value.toFixed(2)}
+                  </td>
+                  <td className="flex items-center justify-center w-[20%]">
+                    <TbEdit
+                      className="text-[24px] hover:text-blue-500 duration-[0.3s] cursor-pointer"
+                      onClick={() => {
+                        console.log('');
+                      }}
                     />
-                  ) : (
-                    <BsArrowDownCircle color="#FF0000" size={32} className="" />
-                  )}
-                </td>
-                <td> {item.category.title}</td>
-                <td>{convertDate(item.created_at)}</td>
-                <td>{item.description}</td>
-                <td>R${item.value.toFixed(2)}</td>
-                <td className="flex items-center justify-center">
-                  <TbEdit
-                    className="text-[24px] hover:text-blue-500 duration-[0.3s] cursor-pointer"
-                    onClick={() => {
-                      console.log('');
-                    }}
-                  />
-                  <TbTrash
-                    className="text-[24px] hover:text-red-700 duration-[0.3s] cursor-pointer"
-                    onClick={() => handleFinishTransaction(item.id)}
-                  />
-                </td>
-              </tr>
-            )
-            // if (new Date(item.created_at).getMonth() == new Date().getMonth()) {
-            //   return
-            // }
-          )}
+                    <TbTrash
+                      className="text-[24px] hover:text-red-700 duration-[0.3s] cursor-pointer"
+                      onClick={() => handleFinishTransaction(item.id)}
+                    />
+                  </td>
+                </tr>
+              );
+            }
+          })}
         </tbody>
       </table>
     </>

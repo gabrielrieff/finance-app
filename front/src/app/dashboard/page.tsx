@@ -7,7 +7,7 @@ export default function dashboard() {
   return (
     <main className="flex min-w-screen flex-col items-center justify-center gap-[20px]">
       <ResumeFinance />
-      <div className="max-w-[1120px] w-[95%]">
+      <div className="max-w-[1120px] w-[95%] shadow-xl">
         <Chart
           chartType="LineChart"
           width="100%"

@@ -8,8 +8,9 @@ import { api } from '~/services/Api';
 import { ListAccount } from '~/components/List';
 import { useEffect, useState } from 'react';
 
-import { GrAddCircle } from 'react-icons/gr';
-import { HandleModal } from '~/components/ui/isModal';
+import { GrAdd, GrSubtract } from 'react-icons/gr';
+import { ProhibitedModal } from '~/components/ui/ProhibitedModal';
+import { ExitModal } from '~/components/ui/ExitModal';
 
 export type modalNewInovoice = {
   description: string;
@@ -35,18 +36,11 @@ export interface billsProps {
   category: categorysProps;
 }
 
-interface resumeAccountsProps {
-  saida: number;
-  entrada: number;
-}
 export default function Accounts() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenProhibited, setIsOpenProhibited] = useState(false);
+  const [isOpenExist, setIsOpenExist] = useState(false);
 
   const [dataAccount, setDataAccount] = useState<Array<billsProps>>([]);
-  const [resumeAccount, setResumeAccount] = useState<resumeAccountsProps>({
-    entrada: 0,
-    saida: 0
-  });
 
   async function handleDeleteTransaction(id: string) {
     await api.delete('inovoice/delete', {
@@ -63,43 +57,38 @@ export default function Accounts() {
     return setDataAccount(inovoice.data);
   }
 
-  const resumeAccounts = () => {
-    let soma = 0;
-    let sub = 0;
-
-    dataAccount.map((account) => {
-      if (account.type === false) {
-        sub += account.value;
-      } else {
-        soma += account.value;
-      }
-    });
-    return { entrada: soma, saida: sub };
-  };
-
   useEffect(() => {
     Inovoices();
   }, []);
 
-  useEffect(() => {
-    setResumeAccount(resumeAccounts());
-  }, [dataAccount]);
+  function handleOpenModalProhibited() {
+    setIsOpenProhibited(!isOpenProhibited);
+  }
 
-  function handleOpenModal() {
-    setIsOpen(!isOpen);
+  function handleOpenModalExit() {
+    setIsOpenExist(!isOpenExist);
   }
   return (
     <>
       <main className="flex min-w-screen flex-col items-center justify-center gap-[20px]">
-        <ResumeFinance resumeAccounts={resumeAccount} />
+        <ResumeFinance />
 
         <button
-          onClick={handleOpenModal}
+          onClick={handleOpenModalProhibited}
           className="text-black flex justify-start items-center rounded-md
          h-[30px] w-[95%] max-w-[1120px] p-[10px] duration-[0.3s] hover:text-white hover:bg-green-400"
         >
-          <GrAddCircle size={20} />
-          <span className="ml-2">Adicionar novo valor!</span>
+          <GrAdd size={20} />
+          <span className="ml-2">Adicionar receita!</span>
+        </button>
+
+        <button
+          onClick={handleOpenModalExit}
+          className="text-black flex justify-start items-center rounded-md
+         h-[30px] w-[95%] max-w-[1120px] p-[10px] duration-[0.3s] hover:text-white hover:bg-red-400"
+        >
+          <GrSubtract size={20} />
+          <span className="ml-2">Adicionar despesa!</span>
         </button>
 
         <ListAccount
@@ -107,7 +96,11 @@ export default function Accounts() {
           handleFinishTransaction={handleDeleteTransaction}
         />
 
-        <HandleModal isOpen={isOpen} onRequestClose={handleOpenModal} />
+        <ProhibitedModal
+          isOpen={isOpenProhibited}
+          onRequestClose={handleOpenModalProhibited}
+        />
+        <ExitModal isOpen={isOpenExist} onRequestClose={handleOpenModalExit} />
       </main>
     </>
   );
