@@ -4,6 +4,7 @@
 import { useRouter } from 'next/navigation';
 import { destroyCookie, parseCookies, setCookie } from 'nookies';
 import { ReactNode, createContext, useEffect, useState } from 'react';
+import { billsProps } from '~/@types/bills';
 import {
   SignInProps,
   SignUpProps,
@@ -25,6 +26,7 @@ export const AuthContext = createContext({} as AuthContextData);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserProps>();
+  const [dataAccount, setDataAccount] = useState<Array<billsProps>>([]);
   const isAuthenticated = !!user;
 
   const { push } = useRouter();
@@ -121,7 +123,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, signIn, signOut, signUp, addAccount }}
+      value={{
+        user,
+        isAuthenticated,
+        signIn,
+        signOut,
+        signUp,
+        addAccount
+      }}
     >
       <>{children}</>
     </AuthContext.Provider>
