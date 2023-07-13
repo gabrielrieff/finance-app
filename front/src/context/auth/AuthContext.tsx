@@ -20,6 +20,8 @@ type AuthContextData = {
   signOut: () => void;
   signUp: (credentials: SignUpProps) => Promise<void>;
   addAccount: (credentials: newInovoiceProps) => Promise<void>;
+  AllInovoices: () => Promise<Array<billsProps>>;
+  dataAccount: Array<billsProps>;
 };
 
 export const AuthContext = createContext({} as AuthContextData);
@@ -61,6 +63,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  useEffect(() => {
+    AllInovoices();
+  });
+
   async function signIn({ email, password }: SignInProps) {
     try {
       const response = await api.post('session', {
@@ -87,6 +93,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (err) {
       /* empty */
     }
+  }
+
+  async function AllInovoices() {
+    const inovoice = await api.get('inovoice/all');
+
+    const filterInovoice = inovoice.data.filter(
+      (account: billsProps) =>
+        new Date(account.created_at).getMonth() === new Date().getMonth()
+    );
+
+    setDataAccount(filterInovoice);
+
+    return dataAccount;
   }
 
   async function signUp({ name, email, password }: SignUpProps) {
@@ -129,7 +148,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         signIn,
         signOut,
         signUp,
-        addAccount
+        addAccount,
+        AllInovoices,
+        dataAccount
       }}
     >
       <>{children}</>

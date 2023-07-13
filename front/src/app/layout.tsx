@@ -1,13 +1,13 @@
 'use client';
+import PrivateRoute from '~/components/PrivateRouter';
+import PublicRoute from '~/components/PublicRouter';
+
+import { checkedRouter } from '~/utils/checkedRouter';
 
 import { usePathname } from 'next/navigation';
-import './globals.css';
-import { Inter } from 'next/font/google';
-import { checkedRouter } from '~/utils/checkedRouter';
-import PrivateRoute from '~/components/PrivateRouter';
 import { AuthProvider } from '~/context/auth/AuthContext';
 
-const inter = Inter({ subsets: ['latin'] });
+import './globals.css';
 
 export const metadata = {
   title: 'Finance App',
@@ -24,10 +24,10 @@ export default function RootLayout({
   const isPublicPage = checkedRouter(router);
 
   return (
-    <html lang="pt-BR" suppressHydrationWarning={true}>
-      <body className={`${inter.className} h-screen`}>
+    <html lang="pt-BR">
+      <body className="h-screen" suppressHydrationWarning={true}>
         <AuthProvider>
-          {isPublicPage && <>{children}</>}
+          {isPublicPage && <PublicRoute>{children}</PublicRoute>}
           {!isPublicPage && <PrivateRoute>{children}</PrivateRoute>}
         </AuthProvider>
       </body>
