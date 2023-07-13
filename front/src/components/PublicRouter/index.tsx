@@ -9,22 +9,23 @@ interface PrivateRouteProps {
   children: ReactNode;
 }
 
-const PrivateRoute = ({ children }: PrivateRouteProps) => {
+const PublicRoute = ({ children }: PrivateRouteProps) => {
   const { push } = useRouter();
+
   const isUserAuthenticated = checkUserAuthenticated();
 
   useEffect(() => {
-    if (!isUserAuthenticated) {
-      push(APP_ROUTER.public.login);
+    if (isUserAuthenticated) {
+      push(APP_ROUTER.privete.dashboard.name);
     }
   }, [isUserAuthenticated, push]);
 
   return (
     <>
-      {!isUserAuthenticated && null}
-      {isUserAuthenticated && children}
+      {isUserAuthenticated && null}
+      {!isUserAuthenticated && children}
     </>
   );
 };
 
-export default PrivateRoute;
+export default PublicRoute;

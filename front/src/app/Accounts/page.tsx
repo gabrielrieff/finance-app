@@ -1,46 +1,24 @@
 'use client';
 
+import { AuthContext } from '~/context/auth/AuthContext';
+
 import { ResumeFinance } from '~/components/ResumeFinance';
-
-import { categorysProps } from '~/@types/category';
-//import { resultProps } from '~/@types/result';
-import { api } from '~/services/Api';
 import { ListAccount } from '~/components/List';
-import { useEffect, useState } from 'react';
-
-import { GrAdd, GrSubtract } from 'react-icons/gr';
 import { ProhibitedModal } from '~/components/ui/ProhibitedModal';
 import { ExitModal } from '~/components/ui/ExitModal';
 
-export type modalNewInovoice = {
-  description: string;
-  value: number;
-  type: boolean;
-  category_id: string;
-};
+import { api } from '~/services/Api';
+import { useContext, useState } from 'react';
 
-export type editOrderProps = {
-  id: string;
-  description?: string;
-  value?: number;
-  type?: boolean;
-};
-
-export interface billsProps {
-  category_id: string;
-  id: string;
-  value: number;
-  type: boolean;
-  description: string;
-  created_at: number;
-  category: categorysProps;
-}
+import { GrAdd, GrSubtract } from 'react-icons/gr';
 
 export default function Accounts() {
+  const { dataAccount } = useContext(AuthContext);
+
   const [isOpenProhibited, setIsOpenProhibited] = useState(false);
   const [isOpenExist, setIsOpenExist] = useState(false);
 
-  const [dataAccount, setDataAccount] = useState<Array<billsProps>>([]);
+  //const [dataAccount, setDataAccount] = useState<Array<billsProps>>([]);
 
   async function handleDeleteTransaction(id: string) {
     await api.delete('inovoice/delete', {
@@ -51,15 +29,6 @@ export default function Accounts() {
 
     //listLoading();
   }
-
-  async function Inovoices() {
-    const inovoice = await api.get('inovoice/all');
-    return setDataAccount(inovoice.data);
-  }
-
-  useEffect(() => {
-    Inovoices();
-  }, []);
 
   function handleOpenModalProhibited() {
     setIsOpenProhibited(!isOpenProhibited);

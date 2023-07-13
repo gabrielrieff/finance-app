@@ -3,8 +3,8 @@
 import { useContext } from 'react';
 import { AuthContext } from '~/context/auth/AuthContext';
 
-import { LinkHome } from '../LinkHome';
-import { ActiveLink } from '../ActiveLink';
+import { LinkHome } from './LinkHome';
+import { ActiveLink } from './ActiveLink';
 import { FaPowerOff } from 'react-icons/fa';
 
 export function Header() {

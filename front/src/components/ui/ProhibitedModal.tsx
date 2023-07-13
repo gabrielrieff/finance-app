@@ -1,9 +1,9 @@
 'use client';
 
 import Modal from 'react-modal';
-import { Input } from '../Input';
+import * as Input from './Input';
 import { useState, useContext, FormEvent, useEffect } from 'react';
-import { Button } from '../Button';
+import { Button } from './Button';
 import { AuthContext } from '~/context/auth/AuthContext';
 import { api } from '~/services/Api';
 import { categorysProps } from '~/@types/category';
@@ -13,7 +13,7 @@ interface modalOrderProps {
   onRequestClose: () => void;
 }
 
-export function ExitModal({ isOpen, onRequestClose }: modalOrderProps) {
+export function ProhibitedModal({ isOpen, onRequestClose }: modalOrderProps) {
   const [value, setValue] = useState(0);
   const [description, setDescription] = useState('');
   const [category_id, setCategory_id] = useState('');
@@ -26,7 +26,7 @@ export function ExitModal({ isOpen, onRequestClose }: modalOrderProps) {
   async function salveInvoice(event: FormEvent) {
     event.preventDefault();
 
-    const type = false;
+    const type = true;
 
     const data = { description, value, type, category_id };
 
@@ -50,14 +50,14 @@ export function ExitModal({ isOpen, onRequestClose }: modalOrderProps) {
   return (
     <Modal style={customStyle} isOpen={isOpen} onRequestClose={onRequestClose}>
       <div className="flex justify-center items-center flex-col h-full">
-        <h1 className="font-bold text-[25px]">Adicionar despesa</h1>
+        <h1 className="font-bold text-[25px]">Adicionar Receita</h1>
         <form
           onSubmit={salveInvoice}
           className="w-[80%] h-[90%] flex justify-evenly flex-col"
         >
           <div className="flex flex-col justify-center">
             <label>Valor</label>
-            <Input
+            <Input.Input
               onChange={(e) => setValue(e.target.valueAsNumber)}
               type="number"
               value={value}
@@ -81,7 +81,7 @@ export function ExitModal({ isOpen, onRequestClose }: modalOrderProps) {
           </div>
           <div className="flex flex-col justify-center">
             <label>Descrição</label>
-            <Input
+            <Input.Input
               type="text"
               onChange={(e) => setDescription(e.target.value)}
               value={description}
