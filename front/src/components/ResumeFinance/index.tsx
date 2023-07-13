@@ -1,17 +1,13 @@
 'use client';
 
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-
 import { useContext, useEffect, useState } from 'react';
-import { BoxValeus } from './Box';
-import { ProgressBar } from '../ProgressBar';
 import { AuthContext } from '~/context/auth/AuthContext';
+
+import { BoxValeus } from './Box';
 import { billsProps } from '~/@types/bills';
 
-interface resumeAccountsProps {
-  saida: number;
-  entrada: number;
-}
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { resumeAccountsProps } from './@type';
 
 export function ResumeFinance() {
   const { dataAccount } = useContext(AuthContext);
@@ -24,7 +20,6 @@ export function ResumeFinance() {
   const { saida, entrada } = resumeAccount;
   const calcSaldo = entrada - saida;
 
-  const progress = Math.round(0);
   const [showValue, setShowValue] = useState(true);
   const resumeAccounts = (data: Array<billsProps>) => {
     let soma = 0;
@@ -65,9 +60,6 @@ export function ResumeFinance() {
                 )}
               </button>
             </div>
-          </div>
-          <div style={{ display: 'contents' }}>
-            <ProgressBar progress={progress} bgColor={'red'} />
           </div>
         </div>
         <div className="flex gap-[20px]">

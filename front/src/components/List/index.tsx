@@ -17,7 +17,7 @@ export function ListAccount({ handleFinishTransaction, Accounts }: ListProps) {
 
   return (
     <>
-      <table className="w-[95%] max-w-[1120px] flex items-center justify-center flex-col">
+      <table className="w-[95%] max-w-[1120px] flex items-center justify-center flex-col mb-14">
         <thead className="w-full h-14 flex rounded-sm bg-white text-black mt-7 shadow-xl">
           <tr className="w-full flex item-center justify-around flex-row">
             <th className="w-[20%] flex justify-center items-center">Tipo</th>
