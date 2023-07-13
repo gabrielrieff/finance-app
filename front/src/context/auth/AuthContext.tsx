@@ -20,8 +20,10 @@ type AuthContextData = {
   signOut: () => void;
   signUp: (credentials: SignUpProps) => Promise<void>;
   addAccount: (credentials: newInovoiceProps) => Promise<void>;
-  AllInovoices: () => Promise<Array<billsProps>>;
+  allInovoices: () => Promise<Array<billsProps>>;
+  filterInovoices: () => Promise<Array<billsProps>>;
   dataAccount: Array<billsProps>;
+  allAccount: Array<billsProps>;
 };
 
 export const AuthContext = createContext({} as AuthContextData);
@@ -29,6 +31,7 @@ export const AuthContext = createContext({} as AuthContextData);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserProps>();
   const [dataAccount, setDataAccount] = useState<Array<billsProps>>([]);
+  const [allAccount, setallAccount] = useState<Array<billsProps>>([]);
   const isAuthenticated = !!user;
 
   const { push } = useRouter();
@@ -64,8 +67,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    AllInovoices();
-  });
+    filterInovoices();
+    allInovoices();
+  }, []);
 
   async function signIn({ email, password }: SignInProps) {
     try {
@@ -95,7 +99,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  async function AllInovoices() {
+  async function allInovoices() {
+    const inovoice = await api.get('inovoice/all');
+    setallAccount(inovoice.data);
+    return allAccount;
+  }
+
+  async function filterInovoices() {
     const inovoice = await api.get('inovoice/all');
 
     const filterInovoice = inovoice.data.filter(
@@ -149,8 +159,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         signOut,
         signUp,
         addAccount,
-        AllInovoices,
-        dataAccount
+        allInovoices,
+        filterInovoices,
+        dataAccount,
+        allAccount
       }}
     >
       <>{children}</>
