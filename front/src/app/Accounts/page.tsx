@@ -6,16 +6,13 @@ import { useContext, useState } from 'react';
 
 import { ResumeFinance } from '~/components/ResumeFinance';
 import { ListAccount } from '~/components/List';
-import { ProhibitedModal } from '~/components/ui/ProhibitedModal';
 import { ExitModal } from '~/components/ui/ExitModal';
 
 export default function Accounts() {
   const { dataAccount, filterInovoices } = useContext(AuthContext);
 
-  const [isOpenProhibited, setIsOpenProhibited] = useState(false);
+  //const [isOpenProhibited, setIsOpenProhibited] = useState(false);
   const [isOpenExist, setIsOpenExist] = useState(false);
-
-  //const [dataAccount, setDataAccount] = useState<Array<billsProps>>([]);
 
   async function handleDeleteTransaction(id: string) {
     await api.delete('inovoice/delete', {
@@ -27,10 +24,6 @@ export default function Accounts() {
     filterInovoices();
   }
 
-  function handleOpenModalProhibited() {
-    setIsOpenProhibited(!isOpenProhibited);
-  }
-
   function handleOpenModalExit() {
     setIsOpenExist(!isOpenExist);
   }
@@ -40,14 +33,6 @@ export default function Accounts() {
         <ResumeFinance />
 
         <div className="w-[95%] max-w-[1120px]">
-          <button
-            onClick={handleOpenModalProhibited}
-            className="bg-green-500 w-[200px] text-black flex justify-start items-center rounded-md
-         h-[30px]  p-[10px] duration-[0.3s] hover:text-white hover:bg-green-400"
-          >
-            <span className="ml-2">Adicionar receita!</span>
-          </button>
-
           <button
             onClick={handleOpenModalExit}
             className="bg-red-500 w-[200px] text-black flex justify-start items-center rounded-md
@@ -62,10 +47,6 @@ export default function Accounts() {
           handleFinishTransaction={handleDeleteTransaction}
         />
 
-        <ProhibitedModal
-          isOpen={isOpenProhibited}
-          onRequestClose={handleOpenModalProhibited}
-        />
         <ExitModal isOpen={isOpenExist} onRequestClose={handleOpenModalExit} />
       </main>
     </>
