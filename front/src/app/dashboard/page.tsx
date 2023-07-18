@@ -36,7 +36,7 @@ const options = {
   vAxis: {
     format: 'currency',
     formatOptions: {
-      prefix: 'R$ ',
+      prefix: 'R',
       fractionDigits: 0
     },
     title: 'Sales',

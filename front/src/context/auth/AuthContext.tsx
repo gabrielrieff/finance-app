@@ -114,6 +114,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     );
 
     setDataAccount(filterInovoice);
+    console.log('foi chamado');
 
     return dataAccount;
   }

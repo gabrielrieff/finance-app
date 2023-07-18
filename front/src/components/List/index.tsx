@@ -34,13 +34,13 @@ export function ListAccount({ handleFinishTransaction, Accounts }: ListProps) {
             </th>
           </tr>
         </thead>
-        <tbody className="w-full flex flex-col text-center mt-[10px] shadow-xl">
+        <tbody className="w-full max-h-[400px] overflow-y-auto overflow-x-hidden flex flex-col text-center mt-[10px] shadow-xl">
           {Accounts.map((item) => {
             if (new Date(item.created_at).getMonth() == new Date().getMonth()) {
               return (
                 <tr
                   key={item.id}
-                  className="w-full h-[50px] flex items-center justify-around flex-row rounded-sm text-center bg-white hover:bg-yellow-50 mt-1 hover:scale-[1.02] duration-[0.5s]"
+                  className="w-full h-[50px] py-4 flex items-center justify-around flex-row rounded-sm text-center bg-white hover:bg-yellow-50 mt-1 hover:scale-[1.02] duration-[0.5s]"
                 >
                   <td className="w-[20%] flex justify-center items-center">
                     {item.type ? (
