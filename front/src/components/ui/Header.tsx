@@ -11,8 +11,8 @@ export function Header() {
   const { signOut } = useContext(AuthContext);
 
   return (
-    <header className="w-full justify-center h-[70px] bg-[#994fab]">
-      <div className="w-full  h-full flex items-center justify-around">
+    <header className="w-full justify-center bg-[#994fab]">
+      <div className="w-full h-[70px] flex items-center justify-around">
         <div>
           <LinkHome />
         </div>

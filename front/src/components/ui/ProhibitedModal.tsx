@@ -17,24 +17,31 @@ export function ProhibitedModal({ isOpen, onRequestClose }: modalOrderProps) {
   const [value, setValue] = useState(0);
   const [description, setDescription] = useState('');
   const [category_id, setCategory_id] = useState('');
+  const [typeAccount, setTypeAccount] = useState('true');
   const [arrayCategoris, setArrayCategoris] = useState<Array<categorysProps>>(
     []
   );
 
-  const { addAccount } = useContext(AuthContext);
+  const { addAccount, filterInovoices } = useContext(AuthContext);
 
   async function salveInvoice(event: FormEvent) {
     event.preventDefault();
+    let type = true;
 
-    const type = true;
+    if (typeAccount === 'false') {
+      type = false;
+    }
 
     const data = { description, value, type, category_id };
 
-    addAccount(data);
+    await addAccount(data);
 
     setValue(0);
     setCategory_id('');
     setDescription('');
+    setTypeAccount('true');
+
+    filterInovoices();
   }
 
   async function fetchCategoris() {
@@ -47,10 +54,12 @@ export function ProhibitedModal({ isOpen, onRequestClose }: modalOrderProps) {
     fetchCategoris();
   }, [isOpen]);
 
+  Modal.setAppElement('#__next');
+
   return (
     <Modal style={customStyle} isOpen={isOpen} onRequestClose={onRequestClose}>
       <div className="flex justify-center items-center flex-col h-full">
-        <h1 className="font-bold text-[25px]">Adicionar Receita</h1>
+        <h1 className="font-bold text-[25px]">Adicione uma nova transação</h1>
         <form
           onSubmit={salveInvoice}
           className="w-[80%] h-[90%] flex justify-evenly flex-col"
@@ -62,6 +71,16 @@ export function ProhibitedModal({ isOpen, onRequestClose }: modalOrderProps) {
               type="number"
               value={value}
               placeholder="100.99"
+            />
+          </div>
+
+          <div className="flex flex-col justify-center">
+            <label>Descrição</label>
+            <Input.Input
+              type="text"
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+              placeholder="Salario recebido do projeto XYZ"
             />
           </div>
 
@@ -79,14 +98,17 @@ export function ProhibitedModal({ isOpen, onRequestClose }: modalOrderProps) {
               ))}
             </select>
           </div>
+
           <div className="flex flex-col justify-center">
-            <label>Descrição</label>
-            <Input.Input
-              type="text"
-              onChange={(e) => setDescription(e.target.value)}
-              value={description}
-              placeholder="Salario recebido do projeto XYZ"
-            />
+            <label>Tipo de transação</label>
+            <select
+              className="p-3 rounded-lg"
+              onChange={(e) => setTypeAccount(e.target.value)}
+            >
+              <option label="Tipo de transação"></option>
+              <option value={'true'}>Entrada</option>
+              <option value={'false'}>Saida</option>
+            </select>
           </div>
 
           <div className="flex justify-around">
@@ -122,6 +144,6 @@ const customStyle = {
     transform: 'translate(-50%, -50%)',
     backgroundColor: '#F0F2F5',
     width: '50%',
-    height: '50%'
+    height: '90%'
   }
 };
