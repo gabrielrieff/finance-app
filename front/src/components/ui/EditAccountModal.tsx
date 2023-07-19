@@ -7,13 +7,19 @@ import { Button } from './Button';
 import { AuthContext } from '~/context/auth/AuthContext';
 import { api } from '~/services/Api';
 import { categorysProps } from '~/@types/category';
+import { billsProps } from '~/@types/bills';
 
 interface modalOrderProps {
   isOpen: boolean;
   onRequestClose: () => void;
+  Account: billsProps;
 }
 
-export function ProhibitedModal({ isOpen, onRequestClose }: modalOrderProps) {
+export function EditAccountModal({
+  isOpen,
+  onRequestClose,
+  Account
+}: modalOrderProps) {
   const [value, setValue] = useState(0);
   const [description, setDescription] = useState('');
   const [category_id, setCategory_id] = useState('');
@@ -22,7 +28,7 @@ export function ProhibitedModal({ isOpen, onRequestClose }: modalOrderProps) {
     []
   );
 
-  const { addAccount, filterInovoices } = useContext(AuthContext);
+  const { filterInovoices } = useContext(AuthContext);
 
   async function salveInvoice(event: FormEvent) {
     event.preventDefault();
@@ -34,7 +40,7 @@ export function ProhibitedModal({ isOpen, onRequestClose }: modalOrderProps) {
 
     const data = { description, value, type, category_id };
 
-    await addAccount(data);
+    await api.put('/inovoice/uptade', data);
 
     setValue(0);
     setCategory_id('');
@@ -55,7 +61,9 @@ export function ProhibitedModal({ isOpen, onRequestClose }: modalOrderProps) {
   }, [isOpen]);
 
   //Modal.setAppElement('#__next');
+  if (Account === undefined) return;
 
+  console.log(Account);
   return (
     <Modal style={customStyle} isOpen={isOpen} onRequestClose={onRequestClose}>
       <div className="flex justify-center items-center flex-col h-full">
@@ -69,7 +77,7 @@ export function ProhibitedModal({ isOpen, onRequestClose }: modalOrderProps) {
             <Input.Input
               onChange={(e) => setValue(e.target.valueAsNumber)}
               type="number"
-              value={value}
+              value={Account.value}
               placeholder="100.99"
             />
           </div>
@@ -79,7 +87,7 @@ export function ProhibitedModal({ isOpen, onRequestClose }: modalOrderProps) {
             <Input.Input
               type="text"
               onChange={(e) => setDescription(e.target.value)}
-              value={description}
+              value={Account.description}
               placeholder="Salario recebido do projeto XYZ"
             />
           </div>
