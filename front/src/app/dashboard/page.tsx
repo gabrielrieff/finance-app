@@ -12,7 +12,7 @@ export default function dashboard() {
   const chartData = transformArrayToChartData(allAccount);
 
   return (
-    <main className="flex min-w-screen flex-col items-center justify-center gap-[20px]">
+    <div className="flex min-w-screen flex-col items-center justify-center gap-[20px]">
       <ResumeFinance />
       <div className="max-w-[1120px] w-[95%] shadow-xl p-5 mb-14">
         <Chart
@@ -24,7 +24,7 @@ export default function dashboard() {
           options={options}
         />
       </div>
-    </main>
+    </div>
   );
 }
 

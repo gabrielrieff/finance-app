@@ -27,7 +27,10 @@ export default function Accounts() {
   }
   return (
     <>
-      <main className="flex min-w-screen flex-col items-center justify-center gap-[20px]">
+      <div
+        id="__next"
+        className="flex min-w-screen flex-col items-center justify-center gap-[20px]"
+      >
         <ResumeFinance />
 
         <ListAccount
@@ -36,7 +39,7 @@ export default function Accounts() {
         />
 
         <ExitModal isOpen={isOpenExist} onRequestClose={handleOpenModalExit} />
-      </main>
+      </div>
     </>
   );
 }

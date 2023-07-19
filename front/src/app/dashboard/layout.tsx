@@ -7,10 +7,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <html>
       <title>Dashboard</title>
       <body className="h-screen">
-        <main className="h-full flex flex-col justify-start gap-9">
+        <div id="__next" className="h-full flex flex-col justify-start gap-9">
           <Header />
           {children}
-        </main>
+        </div>
       </body>
     </html>
   );

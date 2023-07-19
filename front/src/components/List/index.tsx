@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { BsArrowDownCircle, BsArrowUpCircle } from 'react-icons/bs';
 import { TbEdit, TbTrash } from 'react-icons/tb';
 import { VscGear } from 'react-icons/vsc';
 import { billsProps } from '~/@types/bills';
+import { api } from '~/services/Api';
+import { EditAccountModal } from '../ui/EditAccountModal';
 
 interface ListProps {
   handleFinishTransaction: (id: string) => void;
@@ -9,10 +12,26 @@ interface ListProps {
 }
 
 export function ListAccount({ handleFinishTransaction, Accounts }: ListProps) {
+  const [item, setItem] = useState<billsProps>();
+  const [isOpen, setIsOpen] = useState(false);
+
+  async function editAccount(id: string) {
+    const res = await api.get('Inovoice/detail', {
+      params: {
+        id: id
+      }
+    });
+    setItem(res.data);
+  }
+
   function convertDate(date: number) {
     const data = new Date(date);
     const newDate = data.toLocaleDateString();
     return newDate;
+  }
+
+  function handleOpenEditAccountModal() {
+    setIsOpen(!isOpen);
   }
 
   return (
@@ -73,7 +92,8 @@ export function ListAccount({ handleFinishTransaction, Accounts }: ListProps) {
                     <TbEdit
                       className="text-[24px] hover:text-blue-500 duration-[0.3s] cursor-pointer"
                       onClick={() => {
-                        console.log('');
+                        editAccount(item.id);
+                        handleOpenEditAccountModal();
                       }}
                     />
                     <TbTrash
@@ -87,6 +107,12 @@ export function ListAccount({ handleFinishTransaction, Accounts }: ListProps) {
           })}
         </tbody>
       </table>
+
+      <EditAccountModal
+        Account={item!}
+        isOpen={isOpen}
+        onRequestClose={handleOpenEditAccountModal}
+      />
     </>
   );
 }

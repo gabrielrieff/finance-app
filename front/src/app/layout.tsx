@@ -26,12 +26,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className="h-screen" suppressHydrationWarning={true}>
-        <div id="__next">
-          <AuthProvider>
-            {isPublicPage && <PublicRoute>{children}</PublicRoute>}
-            {!isPublicPage && <PrivateRoute>{children}</PrivateRoute>}
-          </AuthProvider>
-        </div>
+        <AuthProvider>
+          {isPublicPage && <PublicRoute>{children}</PublicRoute>}
+          {!isPublicPage && <PrivateRoute>{children}</PrivateRoute>}
+        </AuthProvider>
       </body>
     </html>
   );
