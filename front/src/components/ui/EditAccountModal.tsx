@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client';
 
 import Modal from 'react-modal';
@@ -20,10 +21,12 @@ export function EditAccountModal({
   onRequestClose,
   Account
 }: modalOrderProps) {
-  const [value, setValue] = useState(0);
-  const [description, setDescription] = useState('');
-  const [category_id, setCategory_id] = useState('');
-  const [typeAccount, setTypeAccount] = useState('true');
+  if (Account === undefined) return;
+
+  const [value, setValue] = useState(Account.value);
+  const [description, setDescription] = useState(Account.description);
+  const [category_id, setCategory_id] = useState(Account.category_id);
+  const [typeAccount, setTypeAccount] = useState(Account.type.toString());
   const [arrayCategoris, setArrayCategoris] = useState<Array<categorysProps>>(
     []
   );
@@ -61,9 +64,7 @@ export function EditAccountModal({
   }, [isOpen]);
 
   //Modal.setAppElement('#__next');
-  if (Account === undefined) return;
 
-  console.log(Account);
   return (
     <Modal style={customStyle} isOpen={isOpen} onRequestClose={onRequestClose}>
       <div className="flex justify-center items-center flex-col h-full">
@@ -77,7 +78,7 @@ export function EditAccountModal({
             <Input.Input
               onChange={(e) => setValue(e.target.valueAsNumber)}
               type="number"
-              value={Account.value}
+              value={value}
               placeholder="100.99"
             />
           </div>
@@ -87,7 +88,7 @@ export function EditAccountModal({
             <Input.Input
               type="text"
               onChange={(e) => setDescription(e.target.value)}
-              value={Account.description}
+              value={description}
               placeholder="Salario recebido do projeto XYZ"
             />
           </div>
@@ -100,7 +101,11 @@ export function EditAccountModal({
             >
               <option label="Categorias"></option>
               {arrayCategoris.map((category) => (
-                <option key={category.id} value={category.id}>
+                <option
+                  key={category.id}
+                  selected={category.id === Account.category_id && true}
+                  value={category.id}
+                >
                   {category.title}
                 </option>
               ))}
@@ -114,8 +119,12 @@ export function EditAccountModal({
               onChange={(e) => setTypeAccount(e.target.value)}
             >
               <option label="Tipo de transação"></option>
-              <option value={'true'}>Entrada</option>
-              <option value={'false'}>Saida</option>
+              <option selected={Account.type === true && true} value={'true'}>
+                Entrada
+              </option>
+              <option selected={Account.type === false && true} value={'false'}>
+                Saida
+              </option>
             </select>
           </div>
 

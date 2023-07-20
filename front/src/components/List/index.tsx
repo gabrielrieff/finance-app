@@ -6,6 +6,8 @@ import { billsProps } from '~/@types/bills';
 import { api } from '~/services/Api';
 import { EditAccountModal } from '../ui/EditAccountModal';
 
+import './style.css';
+
 interface ListProps {
   handleFinishTransaction: (id: string) => void;
   Accounts: Array<billsProps>;
@@ -53,7 +55,7 @@ export function ListAccount({ handleFinishTransaction, Accounts }: ListProps) {
             </th>
           </tr>
         </thead>
-        <tbody className="w-full max-h-[400px] overflow-y-auto overflow-x-hidden flex flex-col text-center mt-[10px] shadow-xl">
+        <tbody className="scroll w-full max-h-[400px] overflow-y-auto overflow-x-hidden flex flex-col text-center mt-[10px] shadow-xl">
           {Accounts.map((item) => {
             if (new Date(item.created_at).getMonth() == new Date().getMonth()) {
               return (
