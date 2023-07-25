@@ -36,18 +36,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const { push } = useRouter();
 
-  async function signOut() {
-    try {
-      destroyCookie(undefined, '@nextauth.token');
-      push('/');
-    } catch {
-      console.log('Error singOut');
-    }
-  }
-
   useEffect(() => {
     const { '@nextauth.token': token } = parseCookies();
-
     if (token) {
       api
         .get('/detail')
@@ -67,9 +57,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    filterInovoices();
-    allInovoices();
+    const { '@nextauth.token': token } = parseCookies();
+    if (token) {
+      filterInovoices();
+      allInovoices();
+    }
   }, []);
+
+  async function signOut() {
+    try {
+      destroyCookie(undefined, '@nextauth.token');
+      push('/');
+    } catch {
+      console.log('Error singOut');
+    }
+  }
 
   async function signIn({ email, password }: SignInProps) {
     try {
