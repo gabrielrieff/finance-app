@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import axios, { AxiosError } from 'axios';
 import { parseCookies } from 'nookies';
 import { AuthTokenError } from '~/context/auth/errors/AuthTokenError';
@@ -19,7 +20,7 @@ export function apiClient(ctx = undefined) {
     (error: AxiosError) => {
       if (error.response?.status === 401) {
         if (typeof window !== undefined) {
-          signOut();
+          return;
         } else {
           return Promise.reject(new AuthTokenError());
         }
